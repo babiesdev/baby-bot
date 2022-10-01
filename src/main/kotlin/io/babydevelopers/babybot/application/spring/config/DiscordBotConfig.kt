@@ -7,13 +7,12 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
-
 @Configuration
 class DiscordBotConfig {
     @Bean
     fun bot(
         @Value("\${discord.token}") token: String,
-        @Value("\${discord.playing-message}") message: String,
+        @Value("\${discord.playing-message}") message: String
     ): JDA = JDABuilder.createLight(token)
         .setActivity(playing(message))
         .build()
