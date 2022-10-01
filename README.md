@@ -1,4 +1,4 @@
-# 거누봇
+# 응애 봇
 ![Jdk](https://img.shields.io/badge/Jdk-17-red?logo=java)
 ![Kotlin](https://img.shields.io/badge/Kotlin-1.7.10-blue?logo=kotlin)
 ![Gradle](https://img.shields.io/badge/gradle-7.4-blue?logo=gradle)
