@@ -1,4 +1,4 @@
-package io.github.gunkim.gunnubot.application.spring
+package io.babydevelopers.babybot.application.spring
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
