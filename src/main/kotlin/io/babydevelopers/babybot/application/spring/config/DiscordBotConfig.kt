@@ -1,4 +1,4 @@
-package io.github.gunkim.gunnubot.application.spring.config
+package io.babydevelopers.babybot.application.spring.config
 
 import net.dv8tion.jda.api.JDA
 import net.dv8tion.jda.api.JDABuilder
