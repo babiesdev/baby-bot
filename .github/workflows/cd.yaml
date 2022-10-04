@@ -18,7 +18,7 @@ jobs:
           host: ${{ secrets.HOST }}
           key: ${{ secrets.PRIVATE_KEY }}
           source: "./build/libs/*.jar"
-          target: "/home/ubuntu/deploy"
+          target: "/home/ubuntu"
           strip_components: 2
           
       - name: Execute Server Init Script
