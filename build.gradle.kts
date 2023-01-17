@@ -20,7 +20,7 @@ repositories {
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter")
     implementation("org.springframework.boot:spring-boot-starter-test")
-    implementation("net.dv8tion:JDA:5.0.0-alpha.20")
+    implementation("net.dv8tion:JDA:5.0.0-beta.3")
 }
 
 tasks.test {
