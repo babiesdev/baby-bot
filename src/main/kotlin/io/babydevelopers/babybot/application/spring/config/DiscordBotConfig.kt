@@ -1,5 +1,6 @@
 package io.babydevelopers.babybot.application.spring.config
 
+import io.babydevelopers.babybot.application.spring.discord.ChatGPTController
 import net.dv8tion.jda.api.JDA
 import net.dv8tion.jda.api.JDABuilder
 import net.dv8tion.jda.api.entities.Activity.playing
@@ -12,8 +13,10 @@ class DiscordBotConfig {
     @Bean
     fun bot(
         @Value("\${discord.token}") token: String,
-        @Value("\${discord.playing-message}") message: String
+        @Value("\${discord.playing-message}") message: String,
+        chatGPTController: ChatGPTController
     ): JDA = JDABuilder.createLight(token)
         .setActivity(playing(message))
+        .addEventListeners(chatGPTController)
         .build()
 }
