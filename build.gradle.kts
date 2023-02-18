@@ -5,7 +5,10 @@ plugins {
     kotlin("plugin.spring") version "1.7.10"
     id("org.springframework.boot") version "2.7.4"
     id("io.spring.dependency-management") version "1.0.11.RELEASE"
+    id("org.jlleitschuh.gradle.ktlint-idea") version "11.0.0"
 }
+
+apply(plugin = "org.jlleitschuh.gradle.ktlint")
 
 group = "io.baby-developers.baby-bot"
 version = "1.0.0"
