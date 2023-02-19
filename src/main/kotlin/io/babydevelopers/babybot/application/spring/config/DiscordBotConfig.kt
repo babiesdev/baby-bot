@@ -14,7 +14,7 @@ class DiscordBotConfig {
     fun bot(
         @Value("\${discord.token}") token: String,
         @Value("\${discord.playing-message}") message: String,
-        chatGPTController: ChatGPTController
+        chatGPTController: ChatGPTController,
     ): JDA = JDABuilder.createLight(token)
         .setActivity(playing(message))
         .addEventListeners(chatGPTController)
