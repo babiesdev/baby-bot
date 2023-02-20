@@ -1,15 +1,17 @@
 package io.babydevelopers.babybot.application.spring.discord
 
+import io.babydevelopers.babybot.application.spring.chatgpt.ChatGptClient
+import io.babydevelopers.babybot.application.spring.chatgpt.model.ChatGptRequest
+import kotlinx.coroutines.runBlocking
 import net.dv8tion.jda.api.entities.Message
 import net.dv8tion.jda.api.entities.User
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 import net.dv8tion.jda.api.hooks.ListenerAdapter
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Controller
 
 @Controller
 class ChatGPTController(
-    @Value("\${chat-gpt.token}") private val gptToken: String,
+    private val chatGptClient: ChatGptClient,
 ) : ListenerAdapter() {
     override fun onMessageReceived(event: MessageReceivedEvent) {
         val author: User = event.author
@@ -20,9 +22,10 @@ class ChatGPTController(
         }
 
         if (message.mentions.members.contains(event.guild.selfMember)) {
-            // TODO: 이곳에 Chat-GPT 코드를 구현합니다.
+            val req = ChatGptRequest(prompt = message.contentRaw)
 
-            event.channel.sendMessage("안녕하세요.").queue()
+            val message = runBlocking { chatGptClient.sendMessage(req).block() }
+            event.channel.sendMessage(message.text).queue()
         }
     }
 }
