@@ -1,3 +1,9 @@
 discord:
   playing-message: "공부 안하는 사람들을 감시"
   token: # discord token #
+chat-gpt:
+  token: # chat-gpt token #
+logging:
+  level:
+    org.springframework.web.reactive.function.client.ExchangeFunctions: debug
+    org.springframework.web.HttpLogging: debug
