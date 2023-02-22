@@ -1,0 +1,25 @@
+name: BabyBot Application Deploy
+
+on:
+  workflow_dispatch:
+    inputs:
+      name:
+        description: "RELEASE"
+        required: true
+        default: "release v0.1"
+jobs:
+  build:
+    runs-on: ubuntu-latest   
+    steps:
+    - uses: actions/checkout@v2
+    
+    - name: Set up JDK 17
+      uses: actions/setup-java@v1
+      with:
+        java-version: 17
+        
+    - name: execute gradle
+      run: chmod +x ./gradlew
+      
+    - name: build java
+      run: ./gradlew clean build
