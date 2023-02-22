@@ -23,6 +23,9 @@ jobs:
       
     - name: build java
       run: ./gradlew clean build
+      
+    - name: find jar
+      run: ls -la | ls -la ./build/libs/*
 
     - name: ssh Jar
       uses: appleboy/scp-action@master  
