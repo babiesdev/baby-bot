@@ -9,7 +9,7 @@ import reactor.core.publisher.Mono
 
 @HttpExchange(
     accept = ["application/json"],
-    contentType = "application/json"
+    contentType = "application/json",
 )
 interface ChatGptClient {
     @PostExchange("/v1/completions")

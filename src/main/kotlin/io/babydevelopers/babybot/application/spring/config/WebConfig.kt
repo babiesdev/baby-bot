@@ -12,7 +12,11 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.http.client.reactive.ReactorClientHttpConnector
 import org.springframework.http.codec.json.Jackson2JsonDecoder
 import org.springframework.util.MimeType
-import org.springframework.web.reactive.function.client.*
+import org.springframework.web.reactive.function.client.ClientRequest
+import org.springframework.web.reactive.function.client.ExchangeFilterFunction
+import org.springframework.web.reactive.function.client.ExchangeFunction
+import org.springframework.web.reactive.function.client.ExchangeStrategies
+import org.springframework.web.reactive.function.client.WebClient
 import org.springframework.web.reactive.function.client.support.WebClientAdapter
 import org.springframework.web.service.invoker.HttpServiceProxyFactory
 import reactor.netty.http.client.HttpClient
@@ -32,7 +36,7 @@ class WebConfig {
             .configure(KotlinFeature.NullIsSameAsDefault, false)
             .configure(KotlinFeature.SingletonSupport, false)
             .configure(KotlinFeature.StrictNullChecks, false)
-            .build()
+            .build(),
     ).setPropertyNamingStrategy(PropertyNamingStrategies.SnakeCaseStrategy())
 
     @Bean
@@ -41,20 +45,21 @@ class WebConfig {
             clientCodecConfigurer.customCodecs().register(
                 Jackson2JsonDecoder(
                     objectMapper,
-                    MimeType("text", "javascript", StandardCharsets.UTF_8)
-                )
+                    MimeType("text", "javascript", StandardCharsets.UTF_8),
+                ),
             )
         }.build()
 
     @Bean
     fun webClient(
         @Value("\${chat-gpt.token}") token: String,
-        exchangeStrategies: ExchangeStrategies
-    ) = WebClient.builder()
+        exchangeStrategies: ExchangeStrategies,
+    ) = WebClient
+        .builder()
         .clientConnector(connector())
         .exchangeStrategies(exchangeStrategies)
         .baseUrl("https://api.openai.com")
-        .defaultHeader("Authorization", "Bearer ${token}")
+        .defaultHeader("Authorization", "Bearer $token")
         .filter(RetryFilter())
         .build()
 
@@ -68,7 +73,7 @@ class WebConfig {
     }
 
     private fun connector() = ReactorClientHttpConnector(
-        HttpClient.create(ConnectionProvider.newConnection())
+        HttpClient.create(ConnectionProvider.newConnection()),
     )
 }
 
@@ -77,7 +82,7 @@ class RetryFilter : ExchangeFilterFunction {
         next.exchange(request)
             .retryWhen(
                 Retry.fixedDelay(3, Duration.ofSeconds(60 * 2))
-                    .doAfterRetry { log.warn { "Retrying" } }
+                    .doAfterRetry { log.warn { "Retrying" } },
             )
             .doOnError(Throwable::printStackTrace)
 
