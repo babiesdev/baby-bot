@@ -24,13 +24,6 @@ jobs:
         key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
         restore-keys: |
           ${{ runner.os }}-gradle-
-          
-    - name: change properties
-      shell: bash
-      run: |
-        echo "$PROPERTIES" > src/main/resources/application.yaml
-      env:
-        PROPERTIES: ${{ secrets.PROPERTIES }}
       
     - name: Grant execute permission for gradlew
       run: chmod +x ./gradlew
