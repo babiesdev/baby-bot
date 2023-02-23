@@ -3,7 +3,8 @@ package io.babydevelopers.babybot.domain
 enum class SlashCommand(val command: String) {
     ADMISSION("승인"),
     DELETE("삭제"),
-    ENTER("참여");
+    ENTER("참여"),
+    ;
 
     companion object {
         infix fun from(command: String): SlashCommand =
