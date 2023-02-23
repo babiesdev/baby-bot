@@ -23,7 +23,11 @@ jobs:
           ${{ runner.os }}-gradle-
           
     - name: change properties
-      run:  echo ${{ secrets.PROPERTIES }} > src/main/resources/application.yaml
+      shell: bash
+      run: |
+        echo "$PROPERTIES" > src/main/resources/application.yaml
+      env:
+        PROPERTIES: ${{ secrets.PROPERTIES }}
       
     - name: Grant execute permission for gradlew
       run: chmod +x ./gradlew
