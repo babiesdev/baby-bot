@@ -62,7 +62,7 @@ jobs:
           username: ${{ secrets.ID }}
           key: ${{ secrets.KEY }}
           port: ${{ secrets.PORT }}
-          source: "join/dockerfile"
+          source: "dockerfile"
           target: "/home/ubuntu/baby-bot"
           
     - name: deploy app
