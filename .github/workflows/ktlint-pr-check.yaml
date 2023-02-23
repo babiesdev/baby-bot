@@ -1,6 +1,12 @@
 name: ktlint
 
 on:
+  workflow_dispatch:
+    inputs:
+      name:
+        description: "manual"
+        required: true
+        default: "manual v0.1"
   pull_request:
     branches:
       - main
