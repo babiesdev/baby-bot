@@ -7,6 +7,9 @@ on:
         description: "RELEASE"
         required: true
         default: "release v0.1"
+  push:
+    branches:
+      - main
 jobs:
   build:
     runs-on: ubuntu-latest   
