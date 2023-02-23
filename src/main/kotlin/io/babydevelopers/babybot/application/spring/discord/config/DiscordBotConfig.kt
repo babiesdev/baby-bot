@@ -1,10 +1,10 @@
 package io.babydevelopers.babybot.application.spring.discord.config
 
+import io.babydevelopers.babybot.application.spring.discord.listener.CommandStudyController
+import io.babydevelopers.babybot.application.spring.discord.listener.MentionChatGPTController
 import io.babydevelopers.babybot.domain.SlashCommand.ADMISSION
 import io.babydevelopers.babybot.domain.SlashCommand.DELETE
 import io.babydevelopers.babybot.domain.SlashCommand.ENTER
-import io.babydevelopers.babybot.application.spring.discord.listener.CommandStudyController
-import io.babydevelopers.babybot.application.spring.discord.listener.MentionChatGPTController
 import net.dv8tion.jda.api.JDA
 import net.dv8tion.jda.api.JDABuilder
 import net.dv8tion.jda.api.entities.Activity.playing
