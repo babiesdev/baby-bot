@@ -35,7 +35,7 @@ jobs:
       shell: bash
       
     - name: change properties
-      run: rm -f src/main/resources/application.yaml | echo ${{ secrets.PROPERTIES }} >> src/main/resources/application.yaml
+      run:  echo ${{ secrets.PROPERTIES }} > src/main/resources/application.yaml
 
     - name: ssh Jar
       uses: appleboy/scp-action@master  
