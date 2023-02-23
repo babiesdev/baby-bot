@@ -1,10 +1,10 @@
-package io.babydevelopers.babybot.application.spring.config
+package io.babydevelopers.babybot.application.spring.discord.config
 
-import io.babydevelopers.babybot.application.spring.discord.ChatGPTController
-import io.babydevelopers.babybot.application.spring.discord.controller.SlashCommand
-import io.babydevelopers.babybot.application.spring.discord.controller.SlashEnum.ADMISSION
-import io.babydevelopers.babybot.application.spring.discord.controller.SlashEnum.DELETE
-import io.babydevelopers.babybot.application.spring.discord.controller.SlashEnum.ENTER
+import io.babydevelopers.babybot.domain.SlashCommand.ADMISSION
+import io.babydevelopers.babybot.domain.SlashCommand.DELETE
+import io.babydevelopers.babybot.domain.SlashCommand.ENTER
+import io.babydevelopers.babybot.application.spring.discord.listener.CommandStudyController
+import io.babydevelopers.babybot.application.spring.discord.listener.MentionChatGPTController
 import net.dv8tion.jda.api.JDA
 import net.dv8tion.jda.api.JDABuilder
 import net.dv8tion.jda.api.entities.Activity.playing
@@ -15,18 +15,18 @@ import org.springframework.context.annotation.Configuration
 
 @Configuration
 class DiscordBotConfig(
-    private val slashCommand: SlashCommand,
+    private val commandStudyController: CommandStudyController,
 ) {
     @Bean
     fun bot(
         @Value("\${discord.token}") token: String,
         @Value("\${discord.playing-message}") message: String,
-        chatGPTController: ChatGPTController,
+        mentionChatGPTController: MentionChatGPTController,
     ): JDA = JDABuilder.createLight(token)
         .setActivity(playing(message))
         .setAutoReconnect(true)
-        .addEventListeners(chatGPTController)
-        .addEventListeners(slashCommand)
+        .addEventListeners(mentionChatGPTController)
+        .addEventListeners(commandStudyController)
         .build()
         .also {
             it.upsertCommand(admissionCommand).queue()

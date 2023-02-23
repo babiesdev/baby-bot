@@ -1,6 +1,6 @@
 package io.babydevelopers.babybot.application.spring.discord.service
 
-import io.babydevelopers.babybot.application.spring.discord.domain.DiscordServer
+import io.babydevelopers.babybot.application.spring.discord.model.DiscordServer
 import net.dv8tion.jda.api.entities.Guild
 import net.dv8tion.jda.api.entities.channel.Channel
 import net.dv8tion.jda.api.entities.channel.ChannelType

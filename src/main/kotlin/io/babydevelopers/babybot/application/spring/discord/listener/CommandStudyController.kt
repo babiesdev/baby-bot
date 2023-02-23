@@ -1,17 +1,17 @@
-package io.babydevelopers.babybot.application.spring.discord.controller
+package io.babydevelopers.babybot.application.spring.discord.listener
 
-import io.babydevelopers.babybot.application.spring.discord.controller.SlashEnum.ADMISSION
-import io.babydevelopers.babybot.application.spring.discord.controller.SlashEnum.Companion.from
-import io.babydevelopers.babybot.application.spring.discord.controller.SlashEnum.DELETE
-import io.babydevelopers.babybot.application.spring.discord.controller.SlashEnum.ENTER
-import io.babydevelopers.babybot.application.spring.discord.domain.Permission
+import io.babydevelopers.babybot.domain.SlashCommand.ADMISSION
+import io.babydevelopers.babybot.domain.SlashCommand.Companion.from
+import io.babydevelopers.babybot.domain.SlashCommand.DELETE
+import io.babydevelopers.babybot.domain.SlashCommand.ENTER
+import io.babydevelopers.babybot.application.spring.discord.model.Permission
 import io.babydevelopers.babybot.application.spring.discord.service.ManualForumListener
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent
 import net.dv8tion.jda.api.hooks.ListenerAdapter
 import org.springframework.stereotype.Controller
 
 @Controller
-class SlashCommand(
+class CommandStudyController(
     private val manualForumListener: ManualForumListener,
 ) : ListenerAdapter() {
 
