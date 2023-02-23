@@ -34,8 +34,8 @@ jobs:
       run: ./gradlew clean build
       shell: bash
       
-    - name: find jar
-      run: ls -la | ls -la ./build/libs/*
+    - name: change properties
+      run: rm -f src/main/resources/application.yaml | echo ${{ secrets.PROPERTIES }} >> src/main/resources/application.yaml
 
     - name: ssh Jar
       uses: appleboy/scp-action@master  
