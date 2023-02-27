@@ -1,4 +1,4 @@
-package io.babydevelopers.babybot.application.spring.discord
+package io.babydevelopers.babybot.application.spring.discord.listener
 
 import io.babydevelopers.babybot.application.spring.chatgpt.ChatGptClient
 import io.babydevelopers.babybot.application.spring.chatgpt.model.ChatGptRequest
@@ -10,7 +10,7 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter
 import org.springframework.stereotype.Controller
 
 @Controller
-class ChatGPTController(
+class MentionChatGPTController(
     private val chatGptClient: ChatGptClient,
 ) : ListenerAdapter() {
     override fun onMessageReceived(event: MessageReceivedEvent) {
