@@ -30,7 +30,7 @@ class CommandStudyController(
             DELETE -> {
                 if (permission.hasPermission) {
                     manualForumListener.onChannelDelete(event)
-                        .also { event.reply("${event.channel.name}이 삭제되었습니다.").queue() }
+                        .also { event.reply("${event.channel.name} 보이스 채널이 삭제되었습니다.").queue() }
                 }
             }
 
@@ -44,7 +44,7 @@ class CommandStudyController(
         val member = event.member ?: error("멤버가 존재하지 않습니다.")
         try {
             manualForumListener.onChannelEnter(event)
-            event.reply("${member.effectiveName}님이 ${event.channel.name}에 참여하였습니다.").queue()
+            event.reply("${member.effectiveName}님이 ${event.channel.name} 스터디에 참여하였습니다.").queue()
         } catch (e: IllegalArgumentException) {
             event.reply(e.message.toString()).queue()
         }
