@@ -1,7 +1,6 @@
 package io.babydevelopers.babybot.application.spring.discord.service
 
 import io.babydevelopers.babybot.application.spring.discord.model.DiscordServer
-import net.dv8tion.jda.api.entities.Guild
 import net.dv8tion.jda.api.entities.channel.Channel
 import net.dv8tion.jda.api.entities.channel.ChannelType
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent
@@ -15,12 +14,15 @@ class ManualForumListener(
     fun onChannelCreate(event: SlashCommandInteractionEvent) {
         require(isForum(event.channel)) { error("게시판을 통해서 승인을 해야합니다.") }
 
-        DiscordServer(guild(event)).createRoleAndChannel("[스터디] ${event.channel.name}", category(event))
+        DiscordServer(guild(event)).createRoleAndChannel(
+            channelName(event.channel.name),
+            category(event),
+        )
     }
 
     fun onChannelDelete(event: SlashCommandInteractionEvent) {
         val discordServer = DiscordServer(guild(event))
-        val channelName = "[스터디] ${event.channel.name}"
+        val channelName = channelName(event.channel.name)
 
         discordServer.apply {
             deleteAllRoles(channelName)
@@ -28,21 +30,25 @@ class ManualForumListener(
         }
     }
 
-    private fun category(event: SlashCommandInteractionEvent) = event.jda.getCategoryById(studyCategoryId) ?: error("해당 카테고리가 존재하지 않습니다.")
+    private fun category(event: SlashCommandInteractionEvent) =
+        event.jda.getCategoryById(studyCategoryId)
+            ?: error("해당 카테고리가 존재하지 않습니다.")
 
     fun onChannelEnter(event: SlashCommandInteractionEvent) {
         val discordServer = DiscordServer(guild(event))
-        val member = event.member ?: error("멤버가 존재하지 않습니다.")
+        val member = event.member
+            ?: error("멤버가 존재하지 않습니다.")
 
         runCatching {
-            discordServer.getRole("[스터디] ${event.channel.name}")
-                .let { role -> discordServer.addRoleToMember(member, role) }
+            val role = discordServer.getRole(channelName(event.channel.name))
+            discordServer.addRoleToMember(member, role)
         }.onFailure { throw IllegalArgumentException("이미 참여했습니다.") }
     }
 
     private fun isForum(channel: Channel) = channel.type == ChannelType.GUILD_PUBLIC_THREAD
 
-    private fun guild(event: SlashCommandInteractionEvent): Guild {
-        return event.guild ?: error("서버가 존재하지 않습니다.")
-    }
+    private fun guild(event: SlashCommandInteractionEvent) = event.guild
+        ?: error("서버가 존재하지 않습니다.")
+
+    private fun channelName(channelName: String) = "[스터디] $channelName"
 }

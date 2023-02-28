@@ -1,14 +1,18 @@
 package io.babydevelopers.babybot.application.spring.discord.listener
 
-import io.babydevelopers.babybot.application.spring.discord.model.Permission
 import io.babydevelopers.babybot.application.spring.discord.service.ManualForumListener
-import io.babydevelopers.babybot.domain.SlashCommand.ADMISSION
-import io.babydevelopers.babybot.domain.SlashCommand.Companion.from
-import io.babydevelopers.babybot.domain.SlashCommand.DELETE
-import io.babydevelopers.babybot.domain.SlashCommand.ENTER
+import io.babydevelopers.babybot.domain.SlashCommand
+import io.babydevelopers.babybot.domain.SlashCommand.*
+import net.dv8tion.jda.api.entities.Member
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent
 import net.dv8tion.jda.api.hooks.ListenerAdapter
 import org.springframework.stereotype.Controller
+
+private fun SlashCommandInteractionEvent.sendMessage(message: String) = reply(message).queue()
+private val SlashCommandInteractionEvent._member: Member
+    get() = member ?: error("멤버가 존재하지 않습니다.")
+private val SlashCommandInteractionEvent.hasAdminRole: Boolean
+    get() = _member.hasPermission(net.dv8tion.jda.api.Permission.ADMINISTRATOR)
 
 @Controller
 class CommandStudyController(
@@ -16,46 +20,40 @@ class CommandStudyController(
 ) : ListenerAdapter() {
 
     override fun onSlashCommandInteraction(event: SlashCommandInteractionEvent) {
-        val member = event.member ?: error("멤버가 존재하지 않습니다.")
-        val permission = Permission(member)
-        when (from(event.name)) {
-            ADMISSION -> {
-                if (permission.hasPermission) {
-                    createChannel(event)
-                } else {
-                    event.reply("권한이 없습니다.").queue()
-                }
-            }
+        val hasAdminRole = event.hasAdminRole
+
+        if (!hasAdminRole) {
+            event.sendMessage("권한이 없습니다.")
+            return
+        }
+
+        when (SlashCommand.from(event.name)) {
+            ADMISSION -> createChannel(event)
 
             DELETE -> {
-                if (permission.hasPermission) {
-                    manualForumListener.onChannelDelete(event)
-                        .also { event.reply("${event.channel.name} 보이스 채널이 삭제되었습니다.").queue() }
-                }
+                manualForumListener.onChannelDelete(event)
+                event.sendMessage("${event.channel.name} 보이스 채널이 삭제되었습니다.")
             }
 
-            ENTER -> {
-                enterChannel(event)
-            }
+            ENTER -> enterChannel(event)
         }
     }
 
     private fun enterChannel(event: SlashCommandInteractionEvent) {
-        val member = event.member ?: error("멤버가 존재하지 않습니다.")
         try {
             manualForumListener.onChannelEnter(event)
-            event.reply("${member.effectiveName}님이 ${event.channel.name} 스터디에 참여하였습니다.").queue()
+            event.sendMessage("${event._member.effectiveName}님이 ${event.channel.name} 스터디에 참여하였습니다.")
         } catch (e: IllegalArgumentException) {
-            event.reply(e.message.toString()).queue()
+            event.sendMessage(e.message.toString())
         }
     }
 
     private fun createChannel(event: SlashCommandInteractionEvent) {
         try {
-            manualForumListener.onChannelCreate(event) // 채널 생성
-            event.reply("보이스 채널을 생성하였습니다.").queue()
+            manualForumListener.onChannelCreate(event)
+            event.sendMessage("보이스 채널을 생성하였습니다.")
         } catch (e: IllegalArgumentException) {
-            event.reply(e.message.toString()).queue()
+            event.sendMessage(e.message.toString())
         }
     }
 }
