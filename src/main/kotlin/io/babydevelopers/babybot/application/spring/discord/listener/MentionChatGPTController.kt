@@ -3,8 +3,6 @@ package io.babydevelopers.babybot.application.spring.discord.listener
 import io.babydevelopers.babybot.application.spring.chatgpt.ChatGptClient
 import io.babydevelopers.babybot.application.spring.chatgpt.model.ChatGptRequest
 import kotlinx.coroutines.runBlocking
-import net.dv8tion.jda.api.entities.Message
-import net.dv8tion.jda.api.entities.User
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 import net.dv8tion.jda.api.hooks.ListenerAdapter
 import org.springframework.stereotype.Controller
@@ -14,8 +12,7 @@ class MentionChatGPTController(
     private val chatGptClient: ChatGptClient,
 ) : ListenerAdapter() {
     override fun onMessageReceived(event: MessageReceivedEvent) {
-        val author: User = event.author
-        val message: Message = event.message
+        val (message, author) = event.run { message to author }
 
         if (author.isBot) {
             return
