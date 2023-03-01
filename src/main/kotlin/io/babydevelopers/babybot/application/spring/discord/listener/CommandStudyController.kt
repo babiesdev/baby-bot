@@ -1,7 +1,9 @@
 package io.babydevelopers.babybot.application.spring.discord.listener
 
 import io.babydevelopers.babybot.domain.SlashCommand
-import io.babydevelopers.babybot.domain.SlashCommand.*
+import io.babydevelopers.babybot.domain.SlashCommand.ADMISSION
+import io.babydevelopers.babybot.domain.SlashCommand.DELETE
+import io.babydevelopers.babybot.domain.SlashCommand.ENTER
 import net.dv8tion.jda.api.entities.Member
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent
 import net.dv8tion.jda.api.hooks.ListenerAdapter
@@ -19,23 +21,26 @@ class CommandStudyController(
 ) : ListenerAdapter() {
 
     override fun onSlashCommandInteraction(event: SlashCommandInteractionEvent) {
-        val hasAdminRole = event.hasAdminRole
-
-        if (!hasAdminRole) {
-            event.sendMessage("권한이 없습니다.")
-            return
-        }
-
         when (SlashCommand.from(event.name)) {
-            ADMISSION -> createChannel(event)
+            ADMISSION -> runWithAdminPrivileges(event) {
+                createChannel(event)
+            }
 
-            DELETE -> {
+            DELETE -> runWithAdminPrivileges(event) {
                 manualForumController.onChannelDelete(event)
-                event.sendMessage("${event.channel.name} 보이스 채널이 삭제되었습니다.")
+                event.sendMessage("보이스 채널을 삭제하였습니다.")
             }
 
             ENTER -> enterChannel(event)
         }
+    }
+
+    private fun runWithAdminPrivileges(event: SlashCommandInteractionEvent, action: () -> Unit) {
+        if (!event.hasAdminRole) {
+            event.sendMessage("권한이 없습니다.")
+            return
+        }
+        action()
     }
 
     private fun enterChannel(event: SlashCommandInteractionEvent) {
