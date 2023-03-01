@@ -1,4 +1,4 @@
-package io.babydevelopers.babybot.application.spring.discord.service
+package io.babydevelopers.babybot.application.spring.discord.listener
 
 import io.babydevelopers.babybot.application.spring.discord.model.DiscordServer
 import net.dv8tion.jda.api.entities.channel.Channel
@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 
 @Service
-class ManualForumListener(
+class ManualForumController(
     @Value(value = "\${discord.category-id}") private val studyCategoryId: Long,
 ) {
     fun onChannelCreate(event: SlashCommandInteractionEvent) {
