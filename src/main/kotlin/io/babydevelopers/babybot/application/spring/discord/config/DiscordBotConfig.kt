@@ -2,7 +2,7 @@ package io.babydevelopers.babybot.application.spring.discord.config
 
 import io.babydevelopers.babybot.application.spring.discord.listener.CommandStudyController
 import io.babydevelopers.babybot.application.spring.discord.listener.MentionChatGPTController
-import io.babydevelopers.babybot.domain.SlashCommand
+import io.babydevelopers.babybot.application.spring.discord.model.StudySlashCommand
 import net.dv8tion.jda.api.JDA
 import net.dv8tion.jda.api.JDABuilder
 import net.dv8tion.jda.api.entities.Activity.playing
@@ -26,7 +26,7 @@ class DiscordBotConfig(
         .addEventListeners(commandStudyController)
         .build()
         .also { jda ->
-            SlashCommand.values()
+            StudySlashCommand.values()
                 .forEach { jda.upsertCommand(it.data).queue() }
         }
 }

@@ -1,9 +1,9 @@
 package io.babydevelopers.babybot.application.spring.discord.listener
 
-import io.babydevelopers.babybot.domain.SlashCommand
-import io.babydevelopers.babybot.domain.SlashCommand.ADMISSION
-import io.babydevelopers.babybot.domain.SlashCommand.DELETE
-import io.babydevelopers.babybot.domain.SlashCommand.ENTER
+import io.babydevelopers.babybot.application.spring.discord.model.StudySlashCommand
+import io.babydevelopers.babybot.application.spring.discord.model.StudySlashCommand.ADMISSION
+import io.babydevelopers.babybot.application.spring.discord.model.StudySlashCommand.DELETE
+import io.babydevelopers.babybot.application.spring.discord.model.StudySlashCommand.ENTER
 import net.dv8tion.jda.api.entities.Member
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent
 import net.dv8tion.jda.api.hooks.ListenerAdapter
@@ -21,7 +21,7 @@ class CommandStudyController(
 ) : ListenerAdapter() {
 
     override fun onSlashCommandInteraction(event: SlashCommandInteractionEvent) {
-        when (SlashCommand.from(event.name)) {
+        when (StudySlashCommand.from(event.name)) {
             ADMISSION -> runWithAdminPrivileges(event) {
                 createChannel(event)
             }
