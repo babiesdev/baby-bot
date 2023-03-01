@@ -4,6 +4,7 @@ import io.babydevelopers.babybot.application.spring.discord.model.StudySlashComm
 import io.babydevelopers.babybot.application.spring.discord.model.StudySlashCommand.ADMISSION
 import io.babydevelopers.babybot.application.spring.discord.model.StudySlashCommand.DELETE
 import io.babydevelopers.babybot.application.spring.discord.model.StudySlashCommand.ENTER
+import net.dv8tion.jda.api.Permission.ADMINISTRATOR
 import net.dv8tion.jda.api.entities.Member
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent
 import net.dv8tion.jda.api.hooks.ListenerAdapter
@@ -13,7 +14,7 @@ private fun SlashCommandInteractionEvent.sendMessage(message: String) = reply(me
 private val SlashCommandInteractionEvent._member: Member
     get() = member ?: error("멤버가 존재하지 않습니다.")
 private val SlashCommandInteractionEvent.hasAdminRole: Boolean
-    get() = _member.hasPermission(net.dv8tion.jda.api.Permission.ADMINISTRATOR)
+    get() = _member.hasPermission(ADMINISTRATOR)
 
 @Controller
 class CommandStudyController(
