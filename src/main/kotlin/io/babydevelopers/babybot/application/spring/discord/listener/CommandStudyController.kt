@@ -19,7 +19,6 @@ private val SlashCommandInteractionEvent.hasAdminRole: Boolean
 class CommandStudyController(
     private val manualForumController: ManualForumController,
 ) : ListenerAdapter() {
-
     override fun onSlashCommandInteraction(event: SlashCommandInteractionEvent) {
         when (StudySlashCommand.from(event.name)) {
             ADMISSION -> runWithAdminPrivileges(event) {
