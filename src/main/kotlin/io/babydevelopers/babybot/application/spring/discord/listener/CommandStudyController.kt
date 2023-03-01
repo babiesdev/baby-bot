@@ -1,6 +1,5 @@
 package io.babydevelopers.babybot.application.spring.discord.listener
 
-import io.babydevelopers.babybot.application.spring.discord.service.ManualForumListener
 import io.babydevelopers.babybot.domain.SlashCommand
 import io.babydevelopers.babybot.domain.SlashCommand.*
 import net.dv8tion.jda.api.entities.Member
@@ -16,7 +15,7 @@ private val SlashCommandInteractionEvent.hasAdminRole: Boolean
 
 @Controller
 class CommandStudyController(
-    private val manualForumListener: ManualForumListener,
+    private val manualForumController: ManualForumController,
 ) : ListenerAdapter() {
 
     override fun onSlashCommandInteraction(event: SlashCommandInteractionEvent) {
@@ -31,7 +30,7 @@ class CommandStudyController(
             ADMISSION -> createChannel(event)
 
             DELETE -> {
-                manualForumListener.onChannelDelete(event)
+                manualForumController.onChannelDelete(event)
                 event.sendMessage("${event.channel.name} 보이스 채널이 삭제되었습니다.")
             }
 
@@ -41,7 +40,7 @@ class CommandStudyController(
 
     private fun enterChannel(event: SlashCommandInteractionEvent) {
         try {
-            manualForumListener.onChannelEnter(event)
+            manualForumController.onChannelEnter(event)
             event.sendMessage("${event._member.effectiveName}님이 ${event.channel.name} 스터디에 참여하였습니다.")
         } catch (e: IllegalArgumentException) {
             event.sendMessage(e.message.toString())
@@ -50,7 +49,7 @@ class CommandStudyController(
 
     private fun createChannel(event: SlashCommandInteractionEvent) {
         try {
-            manualForumListener.onChannelCreate(event)
+            manualForumController.onChannelCreate(event)
             event.sendMessage("보이스 채널을 생성하였습니다.")
         } catch (e: IllegalArgumentException) {
             event.sendMessage(e.message.toString())
