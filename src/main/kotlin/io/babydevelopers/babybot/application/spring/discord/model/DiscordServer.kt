@@ -6,7 +6,7 @@ import net.dv8tion.jda.api.entities.Member
 import net.dv8tion.jda.api.entities.Role
 import net.dv8tion.jda.api.entities.channel.concrete.Category
 import net.dv8tion.jda.api.entities.channel.concrete.VoiceChannel
-import java.util.*
+import java.util.EnumSet
 
 private fun String.isSameName(role: Role) = this == role.name
 private fun String.isSameName(role: VoiceChannel) = this == role.name
@@ -15,10 +15,13 @@ private fun VoiceChannel.deleteAt(): Unit = delete().queue()
 
 data class DiscordServer(private val guild: Guild) {
 
-    fun createRoleAndChannel(name: String, categoryById: Category) {
-        guild.createRole()
+    fun createRoleAndChannel(name: String): (Category) -> Unit {
+        val role = guild.createRole()
             .setName(name)
-            .queue { role -> channelAction(name, categoryById, role).queue() }
+
+        return fun(category: Category) {
+            role.queue { role -> channelAction(name, category, role).queue() }
+        }
     }
 
     fun deleteAllRoles(channelName: String) =

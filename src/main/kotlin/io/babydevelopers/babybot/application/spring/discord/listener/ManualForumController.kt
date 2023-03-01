@@ -15,9 +15,8 @@ class ManualForumController(
         require(isForum(event.channel)) { error("게시판을 통해서 승인을 해야합니다.") }
 
         DiscordServer(guild(event)).createRoleAndChannel(
-            channelName(event.channel.name),
-            category(event),
-        )
+            channelName(event.channel.name)
+        )(category(event))
     }
 
     fun onChannelDelete(event: SlashCommandInteractionEvent) {
