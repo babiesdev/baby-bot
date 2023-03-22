@@ -8,3 +8,9 @@ logging:
   level:
     org.springframework.web.reactive.function.client.ExchangeFunctions: debug
     org.springframework.web.HttpLogging: debug
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, info, prometheus
