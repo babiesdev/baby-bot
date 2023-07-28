@@ -6,17 +6,12 @@ import com.fasterxml.jackson.module.kotlin.KotlinFeature
 import com.fasterxml.jackson.module.kotlin.KotlinModule
 import io.babydevelopers.babybot.application.spring.chatgpt.ChatGptClient
 import org.junit.platform.commons.logging.LoggerFactory
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.client.reactive.ReactorClientHttpConnector
 import org.springframework.http.codec.json.Jackson2JsonDecoder
 import org.springframework.util.MimeType
-import org.springframework.web.reactive.function.client.ClientRequest
-import org.springframework.web.reactive.function.client.ExchangeFilterFunction
-import org.springframework.web.reactive.function.client.ExchangeFunction
-import org.springframework.web.reactive.function.client.ExchangeStrategies
-import org.springframework.web.reactive.function.client.WebClient
+import org.springframework.web.reactive.function.client.*
 import org.springframework.web.reactive.function.client.support.WebClientAdapter
 import org.springframework.web.service.invoker.HttpServiceProxyFactory
 import reactor.netty.http.client.HttpClient
@@ -52,14 +47,11 @@ class WebConfig {
 
     @Bean
     fun webClient(
-        @Value("\${chat-gpt.token}") token: String,
         exchangeStrategies: ExchangeStrategies,
     ) = WebClient
         .builder()
         .clientConnector(connector())
         .exchangeStrategies(exchangeStrategies)
-        .baseUrl("https://api.openai.com")
-        .defaultHeader("Authorization", "Bearer $token")
         .filter(RetryFilter())
         .build()
 

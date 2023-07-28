@@ -10,6 +10,7 @@ import reactor.core.publisher.Mono
 @HttpExchange(
     accept = ["application/json"],
     contentType = "application/json",
+    url = "https://api.openai.com",
 )
 interface ChatGptClient {
     @PostExchange("/v1/completions")
