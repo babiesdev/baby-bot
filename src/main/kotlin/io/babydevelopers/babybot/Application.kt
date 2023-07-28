@@ -1,4 +1,4 @@
-package io.babydevelopers.babybot.application.spring
+package io.babydevelopers.babybot
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication

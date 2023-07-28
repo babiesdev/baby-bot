@@ -1,4 +1,4 @@
-package io.babydevelopers.babybot.application.spring.github.gateway
+package io.babydevelopers.babybot.application.gateway
 
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestHeader

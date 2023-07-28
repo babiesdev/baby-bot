@@ -1,12 +1,8 @@
-package io.babydevelopers.babybot.application.spring.discord.listener
+package io.babydevelopers.babybot.endpoint.discord
 
-import io.babydevelopers.babybot.application.spring.discord.model.StudySlashCommand
-import io.babydevelopers.babybot.application.spring.discord.model.StudySlashCommand.ADMISSION
-import io.babydevelopers.babybot.application.spring.discord.model.StudySlashCommand.APPROVAL
-import io.babydevelopers.babybot.application.spring.discord.model.StudySlashCommand.DELETE
-import io.babydevelopers.babybot.application.spring.discord.model.StudySlashCommand.ENTER
-import io.babydevelopers.babybot.application.spring.discord.service.ManualSutdyService
-import net.dv8tion.jda.api.Permission.ADMINISTRATOR
+import io.babydevelopers.babybot.application.ManualSutdyService
+import io.babydevelopers.babybot.application.model.StudySlashCommand
+import net.dv8tion.jda.api.Permission
 import net.dv8tion.jda.api.entities.Member
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent
 import net.dv8tion.jda.api.hooks.ListenerAdapter
@@ -16,7 +12,7 @@ private fun SlashCommandInteractionEvent.sendMessage(message: String) = reply(me
 private val SlashCommandInteractionEvent._member: Member
     get() = member ?: error("멤버가 존재하지 않습니다.")
 private val SlashCommandInteractionEvent.hasAdminRole: Boolean
-    get() = _member.hasPermission(ADMINISTRATOR)
+    get() = _member.hasPermission(Permission.ADMINISTRATOR)
 
 @Controller
 class CommandStudyController(
@@ -24,21 +20,21 @@ class CommandStudyController(
 ) : ListenerAdapter() {
     override fun onSlashCommandInteraction(event: SlashCommandInteractionEvent) {
         when (StudySlashCommand.from(event.name)) {
-            ADMISSION -> runWithAdminPrivileges(event) {
+            StudySlashCommand.ADMISSION -> runWithAdminPrivileges(event) {
                 createChannel(event)
             }
 
-            DELETE -> runWithAdminPrivileges(event) {
+            StudySlashCommand.DELETE -> runWithAdminPrivileges(event) {
                 manualSutdyService.onChannelDelete(event)
                 event.sendMessage("보이스 채널을 삭제하였습니다.")
             }
 
-            ENTER -> {
+            StudySlashCommand.ENTER -> {
                 manualSutdyService.onChannelEnterRequest(event)
                 event.sendMessage("${event._member.effectiveName}님이 ${event.channel.name} 스터디에 참여하였습니다.")
             }
 
-            APPROVAL -> runWithAdminPrivileges(event) {
+            StudySlashCommand.APPROVAL -> runWithAdminPrivileges(event) {
                 manualSutdyService.onChannelEnterApproval(event)
                 event.sendMessage("승인이 완료되었습니다.")
             }

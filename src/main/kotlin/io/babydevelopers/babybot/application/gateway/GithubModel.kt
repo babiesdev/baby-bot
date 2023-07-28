@@ -1,4 +1,4 @@
-package io.babydevelopers.babybot.application.spring.github.gateway
+package io.babydevelopers.babybot.application.gateway
 
 import java.time.LocalDateTime
 

@@ -1,10 +1,10 @@
-package io.babydevelopers.babybot.application.spring.config
+package io.babydevelopers.babybot.application.config
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.PropertyNamingStrategies
 import com.fasterxml.jackson.module.kotlin.KotlinFeature
 import com.fasterxml.jackson.module.kotlin.KotlinModule
-import io.babydevelopers.babybot.application.spring.github.gateway.GithubClient
+import io.babydevelopers.babybot.application.gateway.GithubClient
 import org.junit.platform.commons.logging.LoggerFactory
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration

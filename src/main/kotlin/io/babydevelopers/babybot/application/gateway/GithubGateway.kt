@@ -1,4 +1,4 @@
-package io.babydevelopers.babybot.application.spring.github.gateway
+package io.babydevelopers.babybot.application.gateway
 
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component

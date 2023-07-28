@@ -1,4 +1,4 @@
-package io.babydevelopers.babybot.application.spring.discord.model
+package io.babydevelopers.babybot.application.model
 
 import net.dv8tion.jda.api.interactions.commands.build.SlashCommandData
 import net.dv8tion.jda.internal.interactions.CommandDataImpl

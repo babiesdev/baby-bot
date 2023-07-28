@@ -1,6 +1,6 @@
-package io.babydevelopers.babybot.application.spring.discord.repository
+package io.babydevelopers.babybot.domain
 
-data class StudyMemberEntity(
+data class StudyMember(
     val id: Long,
     val memberName: String,
     val voiceChannelName: String,
@@ -9,7 +9,7 @@ data class StudyMemberEntity(
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
 
-        other as StudyMemberEntity
+        other as StudyMember
 
         if (id != other.id) return false
 

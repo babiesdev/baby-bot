@@ -1,11 +1,11 @@
-package io.babydevelopers.babybot.application.spring.discord.service
+package io.babydevelopers.babybot.application
 
-import io.babydevelopers.babybot.application.spring.discord.model.DiscordServer
-import io.babydevelopers.babybot.application.spring.discord.repository.StudyMemberEntity
-import io.babydevelopers.babybot.application.spring.discord.repository.StudyRepository
+import io.babydevelopers.babybot.application.model.DiscordServer
+import io.babydevelopers.babybot.domain.StudyMember
+import io.babydevelopers.babybot.domain.StudyMemberRepository
 import net.dv8tion.jda.api.entities.Member
 import net.dv8tion.jda.api.entities.channel.Channel
-import net.dv8tion.jda.api.entities.channel.ChannelType.GUILD_PUBLIC_THREAD
+import net.dv8tion.jda.api.entities.channel.ChannelType
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
@@ -16,7 +16,7 @@ private val SlashCommandInteractionEvent._member: Member
 @Service
 class ManualSutdyService(
     @Value(value = "\${discord.category-id}") private val studyCategoryId: Long,
-    private val studyRepository: StudyRepository,
+    private val studyMemberRepository: StudyMemberRepository,
 ) {
     fun onChannelCreate(event: SlashCommandInteractionEvent) {
         require(isForum(event.channel)) { error("게시판을 통해서 승인을 해야합니다.") }
@@ -41,33 +41,34 @@ class ManualSutdyService(
             ?: error("해당 카테고리가 존재하지 않습니다.")
 
     fun onChannelEnterRequest(event: SlashCommandInteractionEvent) = event._member
-        .run { studyRepository.save(StudyMemberEntity(idLong, effectiveName, channelName(event.channel.name))) }
+        .run { studyMemberRepository.save(StudyMember(idLong, effectiveName, channelName(event.channel.name))) }
 
     fun onChannelEnterApproval(event: SlashCommandInteractionEvent) {
         val channelName = channelName(event.channel.name)
 
         DiscordServer(guild(event)).apply {
-            studyRepository.findAllByChannelName(channelName)
+            studyMemberRepository.findAllByChannelName(channelName)
                 .forEach { getMemberById(event, it.id, this) }
         }
 
-        studyRepository.deleteByChannelName(channelName)
+        studyMemberRepository.deleteByChannelName(channelName)
     }
 
-    private fun getMemberById(event: SlashCommandInteractionEvent, memberId: Long, discordServer: DiscordServer) = Thread {
-        Thread.sleep(1)
-        guild(event)
-            .loadMembers().get()
-            .let { members ->
-                members.firstOrNull { it.idLong == memberId }
-            }
-            .let {
-                val member = it ?: error("해당 멤버가 존재하지 않습니다.")
-                discordServer.addRoleToMember(member, discordServer.getRole(channelName(event.channel.name)))
-            }
-    }.start()
+    private fun getMemberById(event: SlashCommandInteractionEvent, memberId: Long, discordServer: DiscordServer) =
+        Thread {
+            Thread.sleep(1)
+            guild(event)
+                .loadMembers().get()
+                .let { members ->
+                    members.firstOrNull { it.idLong == memberId }
+                }
+                .let {
+                    val member = it ?: error("해당 멤버가 존재하지 않습니다.")
+                    discordServer.addRoleToMember(member, discordServer.getRole(channelName(event.channel.name)))
+                }
+        }.start()
 
-    private fun isForum(channel: Channel) = channel.type == GUILD_PUBLIC_THREAD
+    private fun isForum(channel: Channel) = channel.type == ChannelType.GUILD_PUBLIC_THREAD
 
     private fun guild(event: SlashCommandInteractionEvent) = event.guild
         ?: error("서버가 존재하지 않습니다.")
