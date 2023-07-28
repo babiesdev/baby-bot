@@ -2,8 +2,6 @@ discord:
   playing-message: "공부 안하는 사람들을 감시"
   token: # discord token #
   category-id: # category ID #
-chat-gpt:
-  token: # chat-gpt token #
 github:
   token: # github token #
 logging:
