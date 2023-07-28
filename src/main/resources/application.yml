@@ -4,6 +4,8 @@ discord:
   category-id: # category ID #
 chat-gpt:
   token: # chat-gpt token #
+github:
+  token: # github token #
 logging:
   level:
     org.springframework.web.reactive.function.client.ExchangeFunctions: debug

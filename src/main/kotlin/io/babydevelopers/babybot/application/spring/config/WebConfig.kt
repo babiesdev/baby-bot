@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.PropertyNamingStrategies
 import com.fasterxml.jackson.module.kotlin.KotlinFeature
 import com.fasterxml.jackson.module.kotlin.KotlinModule
 import io.babydevelopers.babybot.application.spring.chatgpt.ChatGptClient
+import io.babydevelopers.babybot.application.spring.github.gateway.GithubClient
 import org.junit.platform.commons.logging.LoggerFactory
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -62,6 +63,15 @@ class WebConfig {
             .build()
 
         return factory.createClient(ChatGptClient::class.java)
+    }
+
+    @Bean
+    fun githubClient(webClient: WebClient): GithubClient {
+        val factory = HttpServiceProxyFactory
+            .builder(WebClientAdapter.forClient(webClient))
+            .build()
+
+        return factory.createClient(GithubClient::class.java)
     }
 
     private fun connector() = ReactorClientHttpConnector(
