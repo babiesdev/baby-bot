@@ -12,5 +12,5 @@ import org.springframework.web.service.annotation.PostExchange
 )
 interface GithubClient {
     @PostExchange("/graphql")
-    fun get(@RequestHeader("Authorization") token: String, @RequestBody query: Map<String, String>): GithubUser
+    fun get(@RequestHeader("Authorization") token: String, @RequestBody query: Map<String, String>): GithubUserData
 }

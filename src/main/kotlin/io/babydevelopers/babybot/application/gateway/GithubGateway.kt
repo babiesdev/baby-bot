@@ -1,5 +1,9 @@
 package io.babydevelopers.babybot.application.gateway
 
+import io.babydevelopers.babybot.domain.Commit
+import io.babydevelopers.babybot.domain.GithubRepository
+import io.babydevelopers.babybot.domain.GithubUser
+import io.babydevelopers.babybot.domain.GithubUserRepository
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 
@@ -7,9 +11,20 @@ import org.springframework.stereotype.Component
 class GithubGateway(
     @Value("\${github.token}") val token: String,
     val githubClient: GithubClient
-) {
-    fun get(username: String): GithubUser =
-        githubClient.get(token, mapOf("query" to query.format(username)))
+) : GithubUserRepository {
+    override fun findByUsername(username: String): GithubUser =
+        GithubUser(
+            username,
+            githubClient.get(token, mapOf("query" to query.format(username))).data!!.user!!.repositories!!.edges!!.map {
+                GithubRepository(
+                    it.node!!.name!!,
+                    it.node!!.url!!,
+                    it.node!!.defaultBranchRef!!.target!!.history!!.edges!!.map {
+                        Commit(it.node!!.message!!, it.node!!.committedDate!!)
+                    }
+                )
+            }
+        )
 }
 
 val query = """
