@@ -38,6 +38,17 @@ class CommandStudyController(
                 manualSutdyService.onChannelEnterApproval(event)
                 event.sendMessage("승인이 완료되었습니다.")
             }
+
+            StudySlashCommand.HELP -> {
+                event.sendMessage("""
+                    > 응애봇 명령어
+                    > `/도움말` - 도움말을 표시합니다.
+                    > `/승인` - 스터디 참여 신청을 승인합니다.
+                    > `/참여` - 스터디에 참여합니다.
+                    > `/삭제` - 스터디 채널을 삭제합니다.
+                    > `/참여승인` - 스터디 참여 신청을 승인합니다.
+                """.trimIndent())
+            }
         }
     }
 

@@ -8,6 +8,7 @@ enum class StudySlashCommand(val data: SlashCommandData) {
     DELETE(CommandDataImpl("삭제", "보이스 채널 삭제")),
     ENTER(CommandDataImpl("참여", "스터디 참여 요청")),
     APPROVAL(CommandDataImpl("참여승인", "스터디 참여자 승인")),
+    HELP(CommandDataImpl("도움말", "응애봇의 명령어를 보여줘요!"))
     ;
 
     val command: String
