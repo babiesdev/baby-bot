@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component
 @Component
 class GithubGateway(
     @Value("\${github.token}") val token: String,
-    val githubClient: GithubClient
+    val githubClient: GithubClient,
 ) : GithubUserRepository {
     override fun findByUsername(username: String): GithubUser =
         GithubUser(
@@ -21,9 +21,9 @@ class GithubGateway(
                     it.node!!.url!!,
                     it.node!!.defaultBranchRef!!.target!!.history!!.edges!!.map {
                         Commit(it.node!!.message!!, it.node!!.committedDate!!)
-                    }
+                    },
                 )
-            }
+            },
         )
 }
 
@@ -53,4 +53,5 @@ query {
             }
         }
     }
-}""".trimIndent()
+}
+""".trimIndent()

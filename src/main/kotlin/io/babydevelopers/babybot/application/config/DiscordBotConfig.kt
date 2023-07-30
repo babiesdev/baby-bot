@@ -1,7 +1,7 @@
 package io.babydevelopers.babybot.application.config
 
-import io.babydevelopers.babybot.endpoint.discord.CommandStudyController
 import io.babydevelopers.babybot.application.model.StudySlashCommand
+import io.babydevelopers.babybot.endpoint.discord.CommandStudyController
 import net.dv8tion.jda.api.JDA
 import net.dv8tion.jda.api.JDABuilder
 import net.dv8tion.jda.api.entities.Activity.playing

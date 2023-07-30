@@ -3,45 +3,45 @@ package io.babydevelopers.babybot.application.gateway
 import java.time.LocalDateTime
 
 data class GithubUserData(
-    val data: Data?
+    val data: Data?,
 )
 
 data class User(
-    val repositories: Repositories?
+    val repositories: Repositories?,
 )
 
 data class Data(
-    val user: User?
+    val user: User?,
 )
 
 data class Repositories(
-    val edges: List<Edges>?
+    val edges: List<Edges>?,
 )
 
 data class Edges(
-    val node: Node?
+    val node: Node?,
 )
 
 data class Node(
     val name: String?,
     val url: String?,
-    val defaultBranchRef: DefaultBranchRef?
+    val defaultBranchRef: DefaultBranchRef?,
 )
 
 data class DefaultBranchRef(
-    val target: Target?
+    val target: Target?,
 )
 
 data class Target(
-    val history: History?
+    val history: History?,
 )
 
 data class History(
-    val edges: List<HistoryEdges>?
+    val edges: List<HistoryEdges>?,
 )
 
 data class HistoryEdges(
-    val node: HistoryNode?
+    val node: HistoryNode?,
 )
 
 class HistoryNode {
