@@ -1,12 +1,6 @@
 name: BabyBot Application Deploy
 
 on:
-  workflow_dispatch:
-    inputs:
-      name:
-        description: "RELEASE"
-        required: true
-        default: "release v0.1"
   push:
     branches:
       - main
@@ -37,23 +31,3 @@ jobs:
     - name: build java
       run: ./gradlew clean build
       shell: bash
-
-    - name: ssh Jar
-      uses: appleboy/scp-action@master  
-      with:
-          host: ${{ secrets.DEPLOY_IP }}
-          username: ${{ secrets.ID }}
-          key: ${{ secrets.KEY }}
-          port: ${{ secrets.PORT }}
-          source: "build/libs/gunnu-bot-1.0.0.jar"
-          target: "/home/ubuntu/baby-bot"
-          
-    - name: deploy app
-      uses: appleboy/ssh-action@v0.1.6
-      with:
-          host: ${{ secrets.DEPLOY_IP }}
-          username: ${{ secrets.ID }}
-          key: ${{ secrets.KEY }}
-          port: ${{ secrets.PORT }}
-          script: |
-            sudo sh baby-bot/deploy.sh          
