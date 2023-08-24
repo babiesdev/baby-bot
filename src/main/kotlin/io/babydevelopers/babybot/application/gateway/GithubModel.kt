@@ -1,5 +1,6 @@
 package io.babydevelopers.babybot.application.gateway
 
+import java.time.Instant
 import java.time.LocalDateTime
 
 data class GithubUserData(
@@ -46,5 +47,5 @@ data class HistoryEdges(
 
 class HistoryNode {
     val message: String? = null
-    val committedDate: LocalDateTime? = null
+    val committedDate: Instant? = null
 }

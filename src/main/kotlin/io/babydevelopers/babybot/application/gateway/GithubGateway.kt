@@ -6,6 +6,8 @@ import io.babydevelopers.babybot.domain.GithubUser
 import io.babydevelopers.babybot.domain.GithubUserRepository
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
+import java.time.LocalDateTime
+import java.time.ZoneId
 
 @Component
 class GithubGateway(
@@ -20,7 +22,7 @@ class GithubGateway(
                     it.node!!.name!!,
                     it.node!!.url!!,
                     it.node!!.defaultBranchRef!!.target!!.history!!.edges!!.map {
-                        Commit(it.node!!.message!!, it.node!!.committedDate!!)
+                        Commit(it.node!!.message!!, LocalDateTime.ofInstant(it.node!!.committedDate!!, ZoneId.systemDefault()))
                     },
                 )
             },
@@ -30,7 +32,7 @@ class GithubGateway(
 val query = """
 query {
     user(login: "%s") {
-        repositories(first: 10, orderBy: {field: UPDATED_AT, direction: DESC}) {
+        repositories(first: 10, orderBy: {field: PUSHED_AT, direction: DESC}) {
             edges {
                 node {
                     name
