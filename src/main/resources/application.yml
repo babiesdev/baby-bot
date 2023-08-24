@@ -2,6 +2,7 @@ discord:
   playing-message: "공부 안하는 사람들을 감시"
   token: # discord token #
   category-id: # category ID #
+  notify-message: "어제의 안일한 생명체들을 소개합니다... 🔪🩸\n%s"
 github:
   token: # github token #
 logging:
