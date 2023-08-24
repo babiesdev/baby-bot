@@ -1,7 +1,6 @@
 package io.babydevelopers.babybot.application.gateway
 
 import java.time.Instant
-import java.time.LocalDateTime
 
 data class GithubUserData(
     val data: Data?,
