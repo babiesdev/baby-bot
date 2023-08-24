@@ -11,4 +11,7 @@ data class GithubUser(
                 ?: throw IllegalStateException("커밋이 없습니다.")
         }
             ?: throw IllegalStateException("저장소가 없습니다.")
+
+    val hasCommitFromPreviousDay: Boolean
+        get() = repositories.any(GithubRepository::hasCommitFromPreviousDay)
 }

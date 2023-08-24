@@ -1,6 +1,5 @@
 package io.babydevelopers.babybot.application
 
-import io.babydevelopers.babybot.domain.GithubRepository
 import io.babydevelopers.babybot.domain.GithubUser
 import io.babydevelopers.babybot.domain.GithubUserRepository
 import net.dv8tion.jda.api.JDA
@@ -20,7 +19,7 @@ class GithubService(
     fun notifyNonCommittedUser() {
         val githubUsers = USER_IDS.keys.map(githubUserRepository::findByUsername)
         val nonCommittedUsers = githubUsers
-            .filterNot { it.repositories.any(GithubRepository::hasCommitFromPreviousDay) }
+            .filterNot(GithubUser::hasCommitFromPreviousDay)
 
         sendMessage(nonCommittedUsers)
     }
