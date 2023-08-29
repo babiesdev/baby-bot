@@ -18,22 +18,22 @@ class GithubService(
     @Scheduled(cron = "0 0 0 * * *")
     fun notifyNonCommittedUser() {
         val githubUsers = USER_IDS.keys.map(githubUserRepository::findByUsername)
-        val nonCommittedUsers = githubUsers
-            .filterNot(GithubUser::hasCommitFromPreviousDay)
 
-        sendMessage(nonCommittedUsers)
+        sendNonCommittedUserMessage(githubUsers)
     }
 
-    private fun sendMessage(nonCommittedUsers: List<GithubUser>) {
+    private fun sendNonCommittedUserMessage(githubUsers: List<GithubUser>) {
+        val nonCommittedUsers = githubUsers
+            .filterNot(GithubUser::hasCommitFromPreviousDay)
         val targetChannel: TextChannel = jda.getTextChannelById("1143966701550063657")
             ?: throw IllegalStateException("채널을 찾을 수 없습니다.")
 
-        sendNonCommittedUserMessage(nonCommittedUsers, targetChannel)
+        send(targetChannel, nonCommittedUsers)
     }
 
-    private fun sendNonCommittedUserMessage(
+    private fun send(
+        category: TextChannel,
         nonCommittedUsers: List<GithubUser>,
-        category: TextChannel
     ) {
         val message = notifyMessage.format(nonCommittedUsers.joinToString(", ") { "<@${USER_IDS[it.name]}>" })
         category.sendMessage(message).queue()
